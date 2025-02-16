@@ -1,52 +1,93 @@
 const app = new Vue ({
     el:'#app',
     data: {
-            msg: '多平台遥感协同叶绿素浓度监测系统',
-            users : [
-                {
-                    id: 95001,name: '小a',gender: '男',birthday: '2000-01-01',tel: '12345678901',
-                    email: '12345678901@qq.com',address: '北京市',career: '园林遥感'
-                },
-                {
-                    id: 95002,name: '小b',gender: '女',birthday: '2000-01-01',tel: '12345678901',
-                    email: '12345678901@qq.com',address: '北京市',career: '园林遥感'
-                },
-                {
-                    id: 95003,name: '小c',gender: '男',birthday: '2000-01-01',tel: '12345678901',
-                    email: '12345678901@qq.com',address: '北京市',career: '园林遥感'
-                },
-                {   
-                    id: 95004,name: '小d',gender: '女',birthday: '2000-01-01',tel: '12345678901',
-                    email: '12345678901@qq.com',address: '北京市',career: '园林遥感'
-                },
-                {
-                    id: 95005,name: '小e',gender: '男',birthday: '2000-01-01',tel: '12345678901',
-                    email: '12345678901@qq.com',address: '北京市',career: '园林遥感'
-                },
-                {
-                    id: 95001,name: '小a',gender: '男',birthday: '2000-01-01',tel: '12345678901',
-                    email: '12345678901@qq.com',address: '北京市',career: '园林遥感'
-                },
-                {
-                    id: 95002,name: '小b',gender: '女',birthday: '2000-01-01',tel: '12345678901',
-                    email: '12345678901@qq.com',address: '北京市',career: '园林遥感'
-                },
-                {
-                    id: 95003,name: '小c',gender: '男',birthday: '2000-01-01',tel: '12345678901',
-                    email: '12345678901@qq.com',address: '北京市',career: '园林遥感'
-                },
-                {   
-                    id: 95004,name: '小d',gender: '女',birthday: '2000-01-01',tel: '12345678901',
-                    email: '12345678901@qq.com',address: '北京市',career: '园林遥感'
-                },
-                {
-                    id: 95005,name: '小e',gender: '男',birthday: '2000-01-01',tel: '12345678901',
-                    email: '12345678901@qq.com',address: '北京市',career: '园林遥感'
-                }
-            ],
+        users:[], // 所有用户信息
 
-            total:100, // 数据总数
-            currentpage:1, // 当前页码
-            pagesize:10, // 每页显示条数
+        baseURL: "http://127.0.0.1:8000/",
+        
+        msg: "多平台遥感协同叶绿素浓度监测系统",
+            
+
+        // 分页相关的变量
+        total:0, // 数据总数, 从后端获取
+        currentpage:1, // 当前页码
+        pagesize:10, // 每页显示条数
+        pageUsers:[], // 当前页用户信息
+    },
+
+    mounted() {
+        // 打开页面自动加载所有用户信息
+        this.getUsers()
+    },
+
+    methods: {
+        // 获取所有用户信息
+        getUsers:function() {
+            // 记录this的地址，因为axios使用过程中this的地址会改变
+            let true_this = this;
+
+            // 使用Axios实现Ajas请求
+            axios.get(true_this.baseURL + "users/")
+            .then(function(res) {
+                // 执行成功的回调函数
+                if(res.data.code === 1) {
+                    // # 后端返回
+                    // return JsonResponse({'code': 1, 'data': users})
+                    true_this.users = res.data.data;
+
+                    // 总数据数量
+                    true_this.total = res.data.data.length;
+                    true_this.getPageUsers();
+
+                    // 提示
+                    true_this.$message({
+                        message: '用户信息加载成功！',
+                        type: 'success'
+                    });
+
+                }
+                else {
+                    // 失败的提示
+                    true_this.$message.error('res.data.msg');
+                }
+            })
+            .catch(function(err) {
+                // 执行失败的回调函数
+                console.log(err)
+            })
+        },
+
+        // 获取当前页的用户信息
+        getPageUsers() {
+            this.pageUsers=[]; // 先清空数组
+
+            // 获得当前页的数据
+            for(let i = (this.currentpage-1)*this.pagesize; i < this.total; i++) {
+                this.pageUsers.push(this.users[i]);
+
+                // 如果当前页的数据已经达到pagesize，则退出循环
+                if(this.pageUsers.length == this.pagesize) {
+                    break;
+                }
+            }
+        },
+
+
+        // 分页时修改每页的行数
+        handleSizeChange(size) {
+            this.pagesize = size;
+
+            // 数据重新分页
+            this.getPageUsers();
+        },
+
+        // 分页时修改当前页
+        handleCurrentChange(currentpage) {
+            this.currentpage = currentpage;
+
+            // 数据重新分页
+            this.getPageUsers();
         }
+        
+    }
 })

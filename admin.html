@@ -18,6 +18,9 @@
     <!-- 引入组件库 -->
     <script src="https://unpkg.com/element-ui/lib/index.js"></script>
 
+    <!-- 使用CDN直接引入Axios组件库 -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
 
 </head>
 
@@ -73,7 +76,7 @@
                         </el-form>
 
                         <!-- 表格 -->
-                        <el-table :data="users" border style="width: 100%" size="mini">
+                        <el-table :data="pageUsers" border style="width: 100%" size="mini">
                             <el-table-column type="selection" align="center" width="60">
                             </el-table-column>
                             <el-table-column type="index" label="序号" align="center" width="80">
@@ -85,11 +88,11 @@
                             </el-table-column>
                             <el-table-column prop="birthday" label="出生日期" align="center" width="200">
                             </el-table-column>
-                            <el-table-column prop="tel" label="电话号码" align="center" width="120">
+                            <el-table-column prop="mobile" label="电话号码" align="center" width="120">
                             </el-table-column>
-                            <el-table-column prop="email" label="电子邮箱" align="center" width="300">
+                            <el-table-column prop="email" label="电子邮箱" align="center" width="240">
                             </el-table-column>
-                            <el-table-column prop="address" label="所在地区" align="center" width="130">
+                            <el-table-column prop="address" label="所在地区" align="center" width="150">
                             </el-table-column>
                             <el-table-column prop="career" label="职业领域" align="center" width="130">
                             </el-table-column>
@@ -107,7 +110,7 @@
                                     批量删除</el-button>
                             </el-col>
                             <el-col :span="16" style="text-align: right">
-                                <el-pagination
+                                <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
                                     :current-page="currentpage" :page-sizes="[5, 10, 50, 100]" :page-size="pagesize"
                                     layout="total, sizes, prev, pager, next, jumper" :total="total">
                                 </el-pagination>
