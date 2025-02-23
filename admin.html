@@ -52,14 +52,14 @@
                             <el-row>
                                 <el-col :span="12">
                                     <el-form-item label="请输入查询条件：">
-                                        <el-input placeholder="输入查询条件" style="width: 200px;"></el-input>
+                                        <el-input v-model="inputStr" placeholder="输入查询条件" style="width: 200px;"></el-input>
                                     </el-form-item>
                                 </el-col>
                                 <el-col :span="8" style="text-align:right;padding-right:10px;">
                                     <el-button-group>
-                                        <el-button type="primary" icon="el-icon-search">查询
+                                        <el-button type="primary" icon="el-icon-search" @click="queryUsers()">查询
                                         </el-button>
-                                        <el-button type="primary" icon="el-icon-tickets">全部
+                                        <el-button type="primary" icon="el-icon-tickets" @click="getAllUsers()">全部
                                         </el-button>
                                         <el-button type="primary" icon="el-icon-circle-plus-outline">添加</el-button>
                                     </el-button-group>
@@ -82,11 +82,13 @@
                             <el-table-column type="index" label="序号" align="center" width="80">
                             </el-table-column> <!-- 自动累加 -->
 
-                            <el-table-column prop="name" label="姓名" align="center" width="120">
+                            <el-table-column prop="no" label="id" align="center" width="100">
                             </el-table-column>
-                            <el-table-column prop="gender" label="性别" align="center" width="120">
+                            <el-table-column prop="name" label="姓名" align="center" width="100">
                             </el-table-column>
-                            <el-table-column prop="birthday" label="出生日期" align="center" width="200">
+                            <el-table-column prop="gender" label="性别" align="center" width="100">
+                            </el-table-column>
+                            <el-table-column prop="birthday" label="出生日期" align="center" width="180">
                             </el-table-column>
                             <el-table-column prop="mobile" label="电话号码" align="center" width="120">
                             </el-table-column>

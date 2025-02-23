@@ -4,6 +4,7 @@ const app = new Vue ({
         users:[], // 所有用户信息
 
         baseURL: "http://127.0.0.1:8000/",
+        inputStr: "", // 搜索框输入内容
         
         msg: "多平台遥感协同叶绿素浓度监测系统",
             
@@ -87,6 +88,66 @@ const app = new Vue ({
 
             // 数据重新分页
             this.getPageUsers();
+        },
+
+        // 用户信息查询
+        queryUsers() {
+             //使用Ajax请求--POST-->传递InputStr
+             let true_this = this;
+
+             //开始Ajax请求
+            axios
+            .post(
+                true_this.baseURL + "users/query/",
+                {
+                    inputstr: true_this.inputStr, // 对于后端的inpustr
+                }
+            )
+            .then(function (res) {
+                if (res.data.code === 1) {
+                    //把数据给users
+                    true_this.users = res.data.data;
+                    //获取返回记录的总行数
+                    true_this.total = res.data.data.length;
+
+                    //查询数据为空
+                    if (true_this.users.length === 0) {
+                        
+                        true_this.$message({
+                            message: '查询数据为空！',
+                            type: 'warning'
+                        });
+
+                        true_this.users = []; //清空数组
+                        //获取当前页的数据
+                        true_this.getPageUsers();
+
+                    } else {
+                        //获取当前页的数据
+                        true_this.getPageUsers();
+                        //提示：
+                        true_this.$message({
+                            message: '查询数据加载成功！',
+                            type: 'success'
+                        });
+                    }
+
+                    
+                } else {
+                    //失败的提示！
+                    true_this.$message.error(res.data.msg);
+                }
+            })
+            .catch(function (err) {
+                console.log(err);
+                true_this.$message.error("获取后端查询结果出现异常！");
+            });
+        },
+
+        //显示全部用户信息按钮
+        getAllUsers() {
+            this.inputStr = '';
+            this.getUsers();
         }
         
     }
