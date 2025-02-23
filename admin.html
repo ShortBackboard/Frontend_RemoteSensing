@@ -52,7 +52,8 @@
                             <el-row>
                                 <el-col :span="12">
                                     <el-form-item label="请输入查询条件：">
-                                        <el-input v-model="inputStr" placeholder="输入查询条件" style="width: 200px;"></el-input>
+                                        <el-input v-model="inputStr" placeholder="输入查询条件"
+                                            style="width: 200px;"></el-input>
                                     </el-form-item>
                                 </el-col>
                                 <el-col :span="8" style="text-align:right;padding-right:10px;">
@@ -118,6 +119,44 @@
                                 </el-pagination>
                             </el-col>
                         </el-row>
+
+                        <!-- 用户信息弹出框 -->
+                        <el-dialog title="用户信息" :visible.sync="dialogVisible" width="40%">
+                            <el-form :inline="true">
+                                <el-form-item label="ID：">
+                                    <el-input></el-input>
+                                </el-form-item>
+                                <el-form-item label="姓名：">
+                                    <el-input></el-input>
+                                </el-form-item>
+                                <el-form-item label="性别：">
+                                    <el-select placeholder="请选择性别">
+                                        <el-option label="男" value="男"></el-option>
+                                        <el-option label="女" value="女"></el-option>
+                                    </el-select>
+                                </el-form-item>
+                                <el-form-item label="出生日期：">
+                                    <el-date-picker type="date" placeholder="选择日期">
+                                    </el-date-picker>
+                                </el-form-item>
+                                <el-form-item label="电话号码：">
+                                    <el-input></el-input>
+                                </el-form-item>
+                                <el-form-item label="电子邮箱：">
+                                    <el-input></el-input>
+                                </el-form-item>
+                                <el-form-item label="所在地区：">
+                                    <el-input></el-input>
+                                </el-form-item>
+                                <el-form-item label="研究领域：">
+                                    <el-input></el-input>
+                                </el-form-item>
+                            </el-form>
+                            <span slot="footer" class="dialog-footer">
+                                <el-button type="info">取 消</el-button>
+                                <el-button type="primary">确 定</el-button>
+                            </span>
+                        </el-dialog>
 
                     </el-main>
                     <el-footer style="height: 20px;">版权所有：LiChengYang | 2025-2-10</el-footer>

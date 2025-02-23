@@ -14,6 +14,8 @@ const app = new Vue ({
         currentpage:1, // 当前页码
         pagesize:10, // 每页显示条数
         pageUsers:[], // 当前页用户信息
+
+        dialogVisible: true, // 控制用户信息对话框的显示
     },
 
     mounted() {
