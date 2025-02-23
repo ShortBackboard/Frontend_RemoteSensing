@@ -15,7 +15,7 @@ const app = new Vue ({
         pagesize:10, // 每页显示条数
         pageUsers:[], // 当前页用户信息
 
-        dialogVisible: true, // 控制用户信息对话框的显示
+        dialogVisible: false, // 控制用户信息对话框的显示
     },
 
     mounted() {
@@ -150,6 +150,11 @@ const app = new Vue ({
         getAllUsers() {
             this.inputStr = '';
             this.getUsers();
+        },
+
+        //添加用户，打开表单（模态框）
+        addUser() {
+            this.dialogVisible = true;
         }
         
     }
