@@ -7,7 +7,6 @@ const app = new Vue ({
         inputStr: "", // 搜索框输入内容
         
         msg: "多平台遥感协同叶绿素浓度监测系统",
-            
 
         // 分页相关的变量
         total:0, // 数据总数, 从后端获取
@@ -15,7 +14,11 @@ const app = new Vue ({
         pagesize:10, // 每页显示条数
         pageUsers:[], // 当前页用户信息
 
+        // 模态框相关变量
+        dialogTitle: "", // 模态框标题
         dialogVisible: false, // 控制用户信息对话框的显示
+        isView: false, // 是否为查看模式
+        isEdit: false, // 是否为修改模式
 
         userInfo: { // 用户信息
             no: "",
@@ -166,15 +169,19 @@ const app = new Vue ({
 
         //添加用户，打开表单（模态框）
         addUser() {
-            this.dialogVisible = true;
+            this.dialogTitle = '添加用户信息';
+            this.dialogVisible = true;   
         },
 
-        //查看用户信息
+        //查看用户信息，所有输入框禁用
         viewUser(row) {
+            this.dialogTitle = '查看用户信息';
             this.dialogVisible = true;
 
             //深拷贝
             this.userInfo = JSON.parse(JSON.stringify(row));
+
+            this.isView = true;
         },
 
         //关闭模态框时清空表单数据
@@ -190,7 +197,23 @@ const app = new Vue ({
             this.userInfo.iamge = '';
 
             this.dialogVisible = false;
-        }
+
+            this.isEdit = false;
+            this.isView = false;
+        },
+
+        //修改用户信息，账号不能修改
+        updateUser(row) {
+            this.dialogTitle = '修改用户信息';
+            this.dialogVisible = true;
+
+            this.isEdit = true;
+
+            
+
+            //深拷贝
+            this.userInfo = JSON.parse(JSON.stringify(row));
+        },
         
     }
 })
