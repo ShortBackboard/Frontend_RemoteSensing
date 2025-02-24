@@ -254,7 +254,10 @@ const app = new Vue({
         },
 
         //关闭模态框时清空表单数据
-        closeDialogForm() {
+        closeDialogForm(formName) {
+            // 重置表单的校验
+            this.$refs[formName].resetFields();
+
             this.userInfo.no = '';
             this.userInfo.name = '';
             this.userInfo.gender = '';
@@ -282,6 +285,26 @@ const app = new Vue({
 
             //深拷贝
             this.userInfo = JSON.parse(JSON.stringify(row));
+        },
+
+        //提交用户信息的表单（添加、修改）
+        submitUserForm(formName) {
+            this.$refs[formName].validate((valid) => {
+                if (valid) {
+                    /*
+                    //校验成功后，执行添加或者修改
+                    if (this.isEdit) {
+                        this.submitUpdateUser();
+                    } else {
+                        this.submitAddUser();
+                    }
+                        */
+
+                } else {
+                    console.log('error submit!!');
+                    return false;
+                }
+            });
         },
 
     }
