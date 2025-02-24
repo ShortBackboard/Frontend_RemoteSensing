@@ -124,33 +124,33 @@
 
                         <!-- 用户信息弹出框 -->
                         <el-dialog :title="dialogTitle" :visible.sync="dialogVisible" width="50%" :close-on-click-modal="false" @close="closeDialogForm()">
-                            <el-form v-model="userInfo" style="margin-left: 20px;" :inline="true" label-width="120px" label-position="right" size="mini">
-                                <el-form-item label="账号：">
+                            <el-form :model="userInfo" :rules="rules" style="margin-left: 20px;" :inline="true" label-width="120px" label-position="right" size="mini">
+                                <el-form-item label="账号：" prop="no">
                                     <el-input  v-model="userInfo.no" :disabled="isEdit || isView" suffix-icon="el-icon-edit"></el-input>
                                 </el-form-item>
-                                <el-form-item label="姓名：">
+                                <el-form-item label="姓名：" prop="name">
                                     <el-input v-model="userInfo.name" :disabled="isView" suffix-icon="el-icon-edit"></el-input>
                                 </el-form-item>
-                                <el-form-item label="性别：">
+                                <el-form-item label="性别：" prop="gender">
                                     <el-select v-model="userInfo.gender" :disabled="isView" placeholder="请选择性别">
                                         <el-option label="男" value="男"></el-option>
                                         <el-option label="女" value="女"></el-option>
                                     </el-select>
                                 </el-form-item>
-                                <el-form-item label="出生日期：">
+                                <el-form-item label="出生日期：" prop="birthday">
                                     <el-date-picker v-model="userInfo.birthday" :disabled="isView" type="date" placeholder="选择日期" style="width:93%">
                                     </el-date-picker>
                                 </el-form-item>
-                                <el-form-item label="电话号码：">
+                                <el-form-item label="电话号码：" prop="mobile">
                                     <el-input v-model="userInfo.mobile" :disabled="isView" suffix-icon="el-icon-edit"></el-input>
                                 </el-form-item>
-                                <el-form-item label="电子邮箱：">
+                                <el-form-item label="电子邮箱：" prop="email">
                                     <el-input v-model="userInfo.email" :disabled="isView" suffix-icon="el-icon-edit"></el-input>
                                 </el-form-item>
-                                <el-form-item label="所在地区：">
+                                <el-form-item label="所在地区：" prop="address">
                                     <el-input v-model="userInfo.address" :disabled="isView" suffix-icon="el-icon-edit"></el-input>
                                 </el-form-item>
-                                <el-form-item label="研究领域：">
+                                <el-form-item label="研究领域：" prop="career">
                                     <el-input v-model="userInfo.career" :disabled="isView" suffix-icon="el-icon-edit"></el-input>
                                 </el-form-item>
                             </el-form>
