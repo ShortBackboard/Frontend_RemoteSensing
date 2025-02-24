@@ -16,6 +16,18 @@ const app = new Vue ({
         pageUsers:[], // 当前页用户信息
 
         dialogVisible: false, // 控制用户信息对话框的显示
+
+        userInfo: { // 用户信息
+            no: "",
+            name: "",
+            gender: "",
+            birthday: "",
+            mobile: "",
+            email: "",
+            address: "",
+            career: "",
+            image: "",  // 头像
+        }
     },
 
     mounted() {
@@ -155,6 +167,29 @@ const app = new Vue ({
         //添加用户，打开表单（模态框）
         addUser() {
             this.dialogVisible = true;
+        },
+
+        //查看用户信息
+        viewUser(row) {
+            this.dialogVisible = true;
+
+            //深拷贝
+            this.userInfo = JSON.parse(JSON.stringify(row));
+        },
+
+        //关闭模态框时清空表单数据
+        closeDialogForm() {
+            this.userInfo.no = '';
+            this.userInfo.name = '';
+            this.userInfo.gender = '';
+            this.userInfo.birthday = '';
+            this.userInfo.email = '';
+            this.userInfo.mobile = '';
+            this.userInfo.address = '';
+            this.userInfo.carer = '';
+            this.userInfo.iamge = '';
+
+            this.dialogVisible = false;
         }
         
     }
