@@ -121,13 +121,13 @@
                         </el-row>
 
                         <!-- 用户信息弹出框 -->
-                        <el-dialog title="用户信息" :visible.sync="dialogVisible" width="40%">
-                            <el-form :inline="true">
-                                <el-form-item label="ID：">
-                                    <el-input></el-input>
+                        <el-dialog title="用户信息" :visible.sync="dialogVisible" width="50%" :close-on-click-modal="false">
+                            <el-form style="margin-left: 20px;" :inline="true" label-width="120px" label-position="right" size="mini">
+                                <el-form-item label="账号：">
+                                    <el-input suffix-icon="el-icon-edit"></el-input>
                                 </el-form-item>
                                 <el-form-item label="姓名：">
-                                    <el-input></el-input>
+                                    <el-input suffix-icon="el-icon-edit"></el-input>
                                 </el-form-item>
                                 <el-form-item label="性别：">
                                     <el-select placeholder="请选择性别">
@@ -136,20 +136,20 @@
                                     </el-select>
                                 </el-form-item>
                                 <el-form-item label="出生日期：">
-                                    <el-date-picker type="date" placeholder="选择日期">
+                                    <el-date-picker type="date" placeholder="选择日期" style="width:93%">
                                     </el-date-picker>
                                 </el-form-item>
                                 <el-form-item label="电话号码：">
-                                    <el-input></el-input>
+                                    <el-input suffix-icon="el-icon-edit"></el-input>
                                 </el-form-item>
                                 <el-form-item label="电子邮箱：">
-                                    <el-input></el-input>
+                                    <el-input suffix-icon="el-icon-edit"></el-input>
                                 </el-form-item>
                                 <el-form-item label="所在地区：">
-                                    <el-input></el-input>
+                                    <el-input suffix-icon="el-icon-edit"></el-input>
                                 </el-form-item>
                                 <el-form-item label="研究领域：">
-                                    <el-input></el-input>
+                                    <el-input suffix-icon="el-icon-edit"></el-input>
                                 </el-form-item>
                             </el-form>
                             <span slot="footer" class="dialog-footer">
