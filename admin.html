@@ -77,7 +77,8 @@
                         </el-form>
 
                         <!-- 表格 -->
-                        <el-table :data="pageUsers" border style="width: 100%" size="mini">
+                        <el-table :data="pageUsers" border style="width: 100%" size="mini"
+                        @selection-change="handleSelectionChange">
                             <el-table-column type="selection" align="center" width="60">
                             </el-table-column>
                             <el-table-column type="index" label="序号" align="center" width="80">
@@ -111,7 +112,7 @@
                         <!-- 分页 -->
                         <el-row style="margin-top: 20px;">
                             <el-col :span="8" style="text-align: left">
-                                <el-button type="danger" icon="el-icon-delete" size="mini">
+                                <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteUsers()">
                                     批量删除</el-button>
                             </el-col>
                             <el-col :span="16" style="text-align: right">
