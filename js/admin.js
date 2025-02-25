@@ -342,5 +342,41 @@ const app = new Vue({
                 })
         },
 
+        //修改更新到数据库
+        submitUpdateUser() {
+            //定义that
+            let that = this;
+            //执行Axios请求
+            axios
+                .post(that.baseURL + 'users/update/', that.userInfo)
+                .then(res => {
+                    //执行成功
+                    if (res.data.code === 1) {
+                        //获取所有用户的信息
+                        that.users = res.data.data;
+                        //获取记录条数
+                        that.total = res.data.data.length;
+                        //获取分页信息
+                        that.getPageUsers();
+                        //提示：
+                        that.$message({
+                            message: '数据修改成功！',
+                            type: 'success'
+                        });
+                        //关闭窗体
+                        this.closeDialogForm('userInfo');
+                    } else {
+                        //失败的提示！
+                        that.$message.error(res.data.msg);
+                    }
+                })
+                .catch(err => {
+                    //执行失败
+                    console.log(err);
+                    that.$message.error("修改时获取后端查询结果出现异常！");
+                })
+
+        },
+
     }
 })
