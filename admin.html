@@ -103,7 +103,7 @@
                                 <template slot-scope="scope">
                                 <el-button type="success" icon="el-icon-more" size="mini" circle @click="viewUser(scope.row)"></el-button>
                                 <el-button type="primary" icon="el-icon-edit" size="mini" circle @click="updateUser(scope.row)"></el-button>
-                                <el-button type="danger" icon="el-icon-delete" size="mini" circle></el-button>
+                                <el-button type="danger" icon="el-icon-delete" size="mini" circle @click="deleteUser(scope.row)"></el-button>
                                 </template>
                             </el-table-column>
                         </el-table>
