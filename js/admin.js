@@ -63,7 +63,6 @@ const app = new Vue({
                 email: "",
                 address: "",
                 career: "",
-                image: "",  // 头像
             },
 
             //添加用户的表单信息提交前的校验
@@ -268,6 +267,7 @@ const app = new Vue({
             this.userInfo.address = '';
             this.userInfo.career = '';
             this.userInfo.iamge = '';
+            this.userInfo.imageUrl = '';
 
             this.dialogVisible = false;
 
@@ -461,6 +461,7 @@ const app = new Vue({
         handleSelectionChange(data) {
             this.selectUsers = data;
         },
+
 
     }
 })
