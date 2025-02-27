@@ -30,6 +30,7 @@
             border-radius: 5px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             width: 370px;
+
         }
 
         .login-container h2 {
@@ -46,7 +47,7 @@
             border-radius: 5px;
         }
 
-        .login-container button {
+        .login-button-group button {
             width: calc(50% - 10px);
             padding: 10px;
             background-color: #4CAF50;
@@ -57,7 +58,7 @@
             margin-top: 10px;
         }
 
-        .login-container button:hover {
+        .login-button-group button:hover {
             background-color: #45a049;
         }
 
@@ -75,30 +76,6 @@
         .register-button:hover {
             background-color: #0056b3;
         }
-
-        .captcha-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 10px;
-        }
-
-        .captcha-input {
-            flex: 1;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-
-        .captcha-code {
-            width: 55px;
-            padding: 10px;
-            margin-left: 30px;
-            background-color: #eee;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            cursor: pointer;
-        }
     </style>
 
     <!-- 使用CDN直接引入Vue -->
@@ -113,26 +90,71 @@
     <!-- 使用CDN直接引入Axios组件库 -->
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
-    <!-- 引入 Vue.js -->
-    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
-
 </head>
 
 <body>
-    <div id="app" class="login-container">
-        <h2>多源遥感协同叶绿素浓度监测系统</h2>
-        <form>
-            <input type="text" v-model="loginInfo.no" placeholder="账号" required>
-            <input type="password" v-model="loginInfo.password" placeholder="密码" required>
-            <div style="display: flex; justify-content: space-between;">
-                <button type="button" @click="login()">登录</button>
-                <button type="button" @click="register()">注册</button>
-            </div>
-        </form>
+    <div id="app">
+        <div class="login-container">
+            <h2>多源遥感协同叶绿素浓度监测系统</h2>
+            <form>
+                <input type="text" v-model="loginInfo.no" placeholder="账号" required>
+                <input type="password" v-model="loginInfo.password" placeholder="密码" required>
+                <div style="display: flex; justify-content: space-between;" class="login-button-group">
+                    <button type="button" @click="login()">登录</button>
+                    <button type="button" @click="register()">注册</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- 用户注册弹出框 -->
+        <el-dialog :title="dialogTitle" :visible.sync="dialogRegisterVisible" width="50%" :close-on-click-modal="false"
+            @close="closeDialogForm('registerInfo')">
+            <el-form :model="registerInfo" :rules="rules" ref="registerInfo" style="margin-left: 20px;" :inline="true"
+                label-width="120px" label-position="right" size="mini">
+                <el-form-item label="账号：" prop="no">
+                    <el-input v-model="registerInfo.no" suffix-icon="el-icon-edit"></el-input>
+                </el-form-item>
+                <el-form-item label="姓名：" prop="name">
+                    <el-input v-model="registerInfo.name" suffix-icon="el-icon-edit"></el-input>
+                </el-form-item>
+                <el-form-item label="性别：" prop="gender">
+                    <el-select v-model="registerInfo.gender" placeholder="请选择性别">
+                        <el-option label="男" value="男"></el-option>
+                        <el-option label="女" value="女"></el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="出生日期：" prop="birthday">
+                    <el-date-picker value-format="yyyy-MM-dd" v-model="registerInfo.birthday" type="date"
+                        placeholder="选择日期" style="width:93%">
+                    </el-date-picker>
+                </el-form-item>
+                <el-form-item label="密码：" prop="password">
+                    <el-input v-model="registerInfo.password" suffix-icon="el-icon-edit"></el-input>
+                </el-form-item>
+                <el-form-item label="电话号码：" prop="mobile">
+                    <el-input v-model="registerInfo.mobile" suffix-icon="el-icon-edit"></el-input>
+                </el-form-item>
+                <el-form-item label="电子邮箱：" prop="email">
+                    <el-input v-model="registerInfo.email" suffix-icon="el-icon-edit"></el-input>
+                </el-form-item>
+                <el-form-item label="所在地区：" prop="address">
+                    <el-input v-model="registerInfo.address" suffix-icon="el-icon-edit"></el-input>
+                </el-form-item>
+                <el-form-item label="研究领域：" prop="career">
+                    <el-input v-model="registerInfo.career" suffix-icon="el-icon-edit"></el-input>
+                </el-form-item>
+            </el-form>
+            <span slot="footer" class="dialog-footer">
+                <el-button type="info" @click="closeDialogForm('registerInfo')">取 消</el-button>
+                <el-button type="primary" @click="submitUserForm('registerInfo')">确 定</el-button>
+            </span>
+        </el-dialog>
 
     </div>
 
-    
+
+
+
 </body>
 
 </html>
