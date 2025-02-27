@@ -101,6 +101,44 @@ const app = new Vue({
                     console.log(err)
                 })
         },
+
+        updateUser() {
+            //定义that
+            let that = this;
+            //执行Axios请求
+            axios
+                .post(that.baseURL + 'users/update_login/', that.userInfo)
+                .then(res => {
+                    //执行成功
+                    if (res.data.code === 1) {
+                        //获取所有用户的信息
+                        that.users = res.data.data;
+
+                        for (let i = 0; i < that.users.length; i++) {
+                            if (that.users[i].no == that.userInfo.no) {
+                                that.userInfo = that.users[i];
+                                break;
+                            }
+                        }
+                        
+                        //提示：
+                        that.$message({
+                            message: '数据修改成功！',
+                            type: 'success'
+                        });
+                       
+                    } else {
+                        //失败的提示！
+                        that.$message.error(res.data.msg);
+                    }
+                })
+                .catch(err => {
+                    //执行失败
+                    console.log(err);
+                    that.$message.error("修改时获取后端查询结果出现异常！");
+                })
+
+        },
     },
 
     mounted() {

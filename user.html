@@ -94,7 +94,7 @@
                                     <!-- 左列 -->
                                     <el-col :span="12">
                                         <el-form-item label="账号：" style="width: 90%;" prop="no">
-                                            <el-input v-model="userInfo.no" suffix-icon="el-icon-edit"></el-input>
+                                            <el-input v-model="userInfo.no" :disabled="true" suffix-icon="el-icon-edit"></el-input>
                                         </el-form-item>
                                         <el-form-item label="姓名：" style="width: 90%;" prop="name">
                                             <el-input v-model="userInfo.name" suffix-icon="el-icon-edit"></el-input>
@@ -136,7 +136,7 @@
                             </el-form>
 
                             <span slot="footer" class="dialog-footer">
-                                <el-button type="primary">修改个人信息</el-button>
+                                <el-button type="primary" @click="updateUser">修改个人信息</el-button>
                             </span>
                         </div>
 
