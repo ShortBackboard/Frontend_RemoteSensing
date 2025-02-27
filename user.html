@@ -27,7 +27,7 @@
             <el-header style="height: 70px;">多源遥感协同叶绿素浓度监测系统</el-header>
             <el-container>
                 <el-aside width="200px">
-                    <el-menu default-active="1" class="el-menu-vertical-demo">
+                    <el-menu default-active="1" class="el-menu-vertical-demo" @select="handleSelect">
                         <el-menu-item index="1" style="display: flex; align-items: center;">
                             <i class="el-icon-crop"></i>
                             <span slot="title">随机森林算法预测</span>
@@ -54,8 +54,29 @@
                         </el-menu-item>
                     </el-menu>
                 </el-aside>
+                
+                <!-- 不同功能，选择不同界面 -->
                 <el-container>
-                    <el-main>Main</el-main>
+                    <el-main>
+                        <div v-if="activeIndex === '1'">
+                            <h3>随机森林算法</h3>
+                        </div>
+                        <div v-if="activeIndex === '2'">
+                            <h3>卫星数据处理</h3>
+                        </div>
+                        <div v-if="activeIndex === '3'">
+                            <h3>无人机数据处理</h3>
+                        </div>
+                        <div v-if="activeIndex === '4'">
+                            <h3>ASD地物波谱仪监测</h3>
+                        </div>
+                        <div v-if="activeIndex === '5'">
+                            <h3>实测数据显示</h3>
+                        </div>
+                        <div v-if="activeIndex === '6'">
+                            <h3>个人信息</h3>
+                        </div>
+                    </el-main>
                     <el-footer style="height: 20px;">版权所有：LiChengYang | 2025-2-10</el-footer>
                 </el-container>
             </el-container>
