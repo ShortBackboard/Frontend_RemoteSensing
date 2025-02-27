@@ -119,7 +119,9 @@ const app = new Vue({
                 axios.post(that.baseURL + 'users/login/', that.loginInfo)
                     .then(res => {
                         if (res.data.code === 1) {
-                            window.location.href = 'user.html'; // 切换用户界面
+                            // 切换到用户界面，同时传递账号
+                            localStorage.setItem('currentUser', that.loginInfo.no); 
+                            window.location.href = 'user.html'; 
 
                             that.loginInfo.password === '';
                         } else {
@@ -140,7 +142,7 @@ const app = new Vue({
 
 
         register() {
-            
+
             this.dialogRegisterVisible = true;
         },
 
@@ -158,7 +160,7 @@ const app = new Vue({
             this.registerInfo.mobile = '';
             this.registerInfo.address = '';
             this.registerInfo.career = '';
-            
+
 
             this.dialogRegisterVisible = false;
         },

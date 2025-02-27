@@ -60,4 +60,8 @@ const app = new Vue({
         }
     },
 
+    mounted() {
+        this.userInfo.no = localStorage.getItem('currentUser'); // 从本地存储中获取当前用户编号
+    }
+
 })
