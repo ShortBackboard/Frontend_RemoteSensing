@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,9 +9,12 @@
         body {
             font-family: Arial, sans-serif;
             background-image: url('./image/background.jpg');
-            background-size: 100% 100%; /* 设置背景图片的宽度和高度为100% */
-            background-repeat: no-repeat; /* 防止背景图片重复 */
-            background-position: center center; /* 将背景图片居中 */
+            background-size: 100% 100%;
+            /* 设置背景图片的宽度和高度为100% */
+            background-repeat: no-repeat;
+            /* 防止背景图片重复 */
+            background-position: center center;
+            /* 将背景图片居中 */
             background-color: #f4f4f4;
             display: flex;
             justify-content: center;
@@ -18,17 +22,21 @@
             height: 100vh;
             margin: 0;
         }
+
         .login-container {
-            background-color: rgba(255, 255, 255, 0.6); /* 设置背景为白色且透明度为0.6 */
+            background-color: rgba(255, 255, 255, 0.6);
+            /* 设置背景为白色且透明度为0.6 */
             padding: 20px;
             border-radius: 5px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             width: 370px;
         }
+
         .login-container h2 {
             text-align: center;
             margin-bottom: 20px;
         }
+
         .login-container input[type="text"],
         .login-container input[type="password"] {
             width: 95%;
@@ -37,6 +45,7 @@
             border: 1px solid #ccc;
             border-radius: 5px;
         }
+
         .login-container button {
             width: calc(50% - 10px);
             padding: 10px;
@@ -47,9 +56,11 @@
             cursor: pointer;
             margin-top: 10px;
         }
+
         .login-container button:hover {
             background-color: #45a049;
         }
+
         .register-button {
             width: calc(50% - 10px);
             padding: 10px;
@@ -60,21 +71,25 @@
             cursor: pointer;
             margin-top: 10px;
         }
+
         .register-button:hover {
             background-color: #0056b3;
         }
+
         .captcha-container {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-top: 10px;
         }
+
         .captcha-input {
             flex: 1;
             padding: 10px;
             border: 1px solid #ccc;
             border-radius: 5px;
         }
+
         .captcha-code {
             width: 55px;
             padding: 10px;
@@ -85,60 +100,44 @@
             cursor: pointer;
         }
     </style>
-</head>
-<body>
-    <div id="app" class="login-container">
-        <h2>多源遥感协同叶绿素浓度监测系统</h2>
-        <form @submit.prevent="login">
-            <input type="text" v-model="username" placeholder="用户名" required>
-            <input type="password" v-model="password" placeholder="密码" required>
-            <div class="captcha-container">
-                <input type="text" v-model="captchaInput" placeholder="验证码" required>
-                <span class="captcha-code" @click="generateCaptcha">{{ captchaCode }}</span>
-            </div>
-            <div style="display: flex; justify-content: space-between;">
-                <button type="submit">登录</button>
-                <button type="button" class="register-button" @click="register">注册</button>
-            </div>
-        </form>
-    </div>
+
+    <!-- 使用CDN直接引入Vue -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+
+    <!-- 引入element-ui -->
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <!-- 引入组件库 -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+
+    <!-- 使用CDN直接引入Axios组件库 -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
     <!-- 引入 Vue.js -->
     <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
-    <script>
-        new Vue({
-            el: '#app',
-            data: {
-                username: '',
-                password: '',
-                captchaInput: '',
-                captchaCode: '',
-                correctUsername: 'root',
-                correctPassword: 'root'
-            },
-            methods: {
-                generateCaptcha() {
-                    this.captchaCode = Math.random().toString(36).substring(2, 6).toUpperCase();
-                },
-                login() {
-                    if (this.username === this.correctUsername && this.password === this.correctPassword && this.captchaInput === this.captchaCode) {
-                        window.location.href = 'admin.html'; // 跳转到 admin
-                    } else {
-                        alert('用户名、密码或验证码错误');
-                        this.generateCaptcha(); // 刷新验证码
-                        this.password = ''; // 清除密码框内容
-                        this.captchaInput = ''; // 清除验证码输入框内容
-                    }
-                },
-                register() {
-                    // 这里可以添加注册逻辑，例如打开注册页面或者显示注册表单
-                    alert('注册功能尚未实现');
-                }
-            },
-            mounted() {
-                this.generateCaptcha(); // 初始化时生成验证码
-            }
-        });
-    </script>
+
+</head>
+
+<body>
+    <div id="app" class="login-container">
+        <h2>多源遥感协同叶绿素浓度监测系统</h2>
+        <form>
+            <input type="text" v-model="loginInfo.no" placeholder="账号" required>
+            <input type="password" v-model="loginInfo.password" placeholder="密码" required>
+            <div style="display: flex; justify-content: space-between;">
+                <button type="button" @click="login()">登录</button>
+                <button type="button" @click="register()">注册</button>
+            </div>
+        </form>
+
+    </div>
+
+    
 </body>
+
 </html>
+
+<!-- 引入JS代码 -->
+<script src="./js/login.js">
+
+</script>
