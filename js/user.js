@@ -4,7 +4,11 @@ const app = new Vue({
         return {
             msg: '多平台遥感协同叶绿素浓度监测系统',
 
+            users: [], // 用户列表
+
             activeIndex: '6', // 当前激活的菜单项
+
+            baseURL: "http://127.0.0.1:8000/",
 
             userInfo: { // 用户注册信息
                 no: "",
@@ -57,11 +61,51 @@ const app = new Vue({
     methods: {
         handleSelect(index) {
             this.activeIndex = index
-        }
+        },
+
+        // 获取用户信息
+        getUserInfo() {
+            // 记录this的地址，因为axios使用过程中this的地址会改变
+            let that = this;
+
+            // 使用Axios实现Ajas请求
+            axios.get(that.baseURL + "users/")
+                .then(function (res) {
+                    // 执行成功的回调函数
+                    if (res.data.code === 1) {
+                        // # 后端返回
+                        // return JsonResponse({'code': 1, 'data': users})
+                        that.users = res.data.data;
+
+                        for (let i = 0; i < that.users.length; i++) {
+                            if (that.users[i].no == that.userInfo.no) {
+                                that.userInfo = that.users[i];
+                                break;
+                            }
+                        }
+
+                        // 提示
+                        that.$message({
+                            message: '用户信息加载成功！',
+                            type: 'success'
+                        });
+
+                    }
+                    else {
+                        // 失败的提示
+                        that.$message.error('res.data.msg');
+                    }
+                })
+                .catch(function (err) {
+                    // 执行失败的回调函数
+                    console.log(err)
+                })
+        },
     },
 
     mounted() {
         this.userInfo.no = localStorage.getItem('currentUser'); // 从本地存储中获取当前用户编号
+        this.getUserInfo(); // 调用获取用户信息的方法
     }
 
 })

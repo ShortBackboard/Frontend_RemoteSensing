@@ -111,23 +111,23 @@ const app = new Vue({
         // 获取所有用户信息
         getUsers: function () {
             // 记录this的地址，因为axios使用过程中this的地址会改变
-            let true_this = this;
+            let that = this;
 
             // 使用Axios实现Ajas请求
-            axios.get(true_this.baseURL + "users/")
+            axios.get(that.baseURL + "users/")
                 .then(function (res) {
                     // 执行成功的回调函数
                     if (res.data.code === 1) {
                         // # 后端返回
                         // return JsonResponse({'code': 1, 'data': users})
-                        true_this.users = res.data.data;
+                        that.users = res.data.data;
 
                         // 总数据数量
-                        true_this.total = res.data.data.length;
-                        true_this.getPageUsers();
+                        that.total = res.data.data.length;
+                        that.getPageUsers();
 
                         // 提示
-                        true_this.$message({
+                        that.$message({
                             message: '用户信息加载成功！',
                             type: 'success'
                         });
@@ -135,7 +135,7 @@ const app = new Vue({
                     }
                     else {
                         // 失败的提示
-                        true_this.$message.error('res.data.msg');
+                        that.$message.error('res.data.msg');
                     }
                 })
                 .catch(function (err) {
@@ -179,40 +179,40 @@ const app = new Vue({
         // 用户信息查询
         queryUsers() {
             //使用Ajax请求--POST-->传递InputStr
-            let true_this = this;
+            let that = this;
 
             //开始Ajax请求
             axios
                 .post(
-                    true_this.baseURL + "users/query/",
+                    that.baseURL + "users/query/",
                     {
-                        inputstr: true_this.inputStr, // 对于后端的inpustr
+                        inputstr: that.inputStr, // 对于后端的inpustr
                     }
                 )
                 .then(function (res) {
                     if (res.data.code === 1) {
                         //把数据给users
-                        true_this.users = res.data.data;
+                        that.users = res.data.data;
                         //获取返回记录的总行数
-                        true_this.total = res.data.data.length;
+                        that.total = res.data.data.length;
 
                         //查询数据为空
-                        if (true_this.users.length === 0) {
+                        if (that.users.length === 0) {
 
-                            true_this.$message({
+                            that.$message({
                                 message: '查询数据为空！',
                                 type: 'warning'
                             });
 
-                            true_this.users = []; //清空数组
+                            that.users = []; //清空数组
                             //获取当前页的数据
-                            true_this.getPageUsers();
+                            that.getPageUsers();
 
                         } else {
                             //获取当前页的数据
-                            true_this.getPageUsers();
+                            that.getPageUsers();
                             //提示：
-                            true_this.$message({
+                            that.$message({
                                 message: '查询数据加载成功！',
                                 type: 'success'
                             });
@@ -221,12 +221,12 @@ const app = new Vue({
 
                     } else {
                         //失败的提示！
-                        true_this.$message.error(res.data.msg);
+                        that.$message.error(res.data.msg);
                     }
                 })
                 .catch(function (err) {
                     console.log(err);
-                    true_this.$message.error("获取后端查询结果出现异常！");
+                    that.$message.error("获取后端查询结果出现异常！");
                 });
         },
 
