@@ -18,6 +18,9 @@
     <!-- 引入组件库 -->
     <script src="https://unpkg.com/element-ui/lib/index.js"></script>
 
+    <!-- 使用CDN直接引入Axios组件库 -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
 
 </head>
 
@@ -54,28 +57,89 @@
                         </el-menu-item>
                     </el-menu>
                 </el-aside>
-                
+
                 <!-- 不同功能，选择不同界面 -->
                 <el-container>
                     <el-main>
+                        <!-- 随机森林算法：结合模态框输入一个类ChlorophyllPrediction给后端，返回叶绿素浓度（还需要一个数据用于训练模型） -->
                         <div v-if="activeIndex === '1'">
                             <h3>随机森林算法</h3>
                         </div>
+
+                        <!-- 卫星数据处理：镶嵌GEE网页  -->
                         <div v-if="activeIndex === '2'">
                             <h3>卫星数据处理</h3>
                         </div>
+
+                        <!-- 无人机数据处理：简单tif图片处理 -->
                         <div v-if="activeIndex === '3'">
                             <h3>无人机数据处理</h3>
                         </div>
+
+                        <!-- ASD地物波谱仪监测：读入txt文件，读取相关波段计算叶绿素浓度 -->
                         <div v-if="activeIndex === '4'">
                             <h3>ASD地物波谱仪监测</h3>
                         </div>
+
+                        <!-- 实测数据显示：输入经纬度，显示该点叶绿素浓度 -->
                         <div v-if="activeIndex === '5'">
                             <h3>实测数据显示</h3>
                         </div>
+
+                        <!-- 个人信息：个人信息修改，包括密码（模态框，调用update接口）；打开时自动获取个人信息显示-->
                         <div v-if="activeIndex === '6'">
-                            <h3>个人信息</h3>
+                            <el-form :model="userInfo" ref="userInfo"  :rules="rules" label-width="120px" label-position="right"
+                                size="mini" style="margin-left: 20px; display: flex; flex-wrap: wrap;">
+                                <el-row :gutter="20" style="width: 100%;">
+                                    <!-- 左列 -->
+                                    <el-col :span="12">
+                                        <el-form-item label="账号：" style="width: 90%;" prop="no">
+                                            <el-input v-model="userInfo.no" suffix-icon="el-icon-edit"></el-input>
+                                        </el-form-item>
+                                        <el-form-item label="姓名：" style="width: 90%;" prop="name">
+                                            <el-input v-model="userInfo.name" suffix-icon="el-icon-edit"></el-input>
+                                        </el-form-item>
+                                        <el-form-item label="性别：" style="width: 90%;" prop="gender">
+                                            <el-select v-model="userInfo.gender" placeholder="请选择性别"
+                                                style="width: 100%;">
+                                                <el-option label="男" value="男"></el-option>
+                                                <el-option label="女" value="女"></el-option>
+                                            </el-select>
+                                        </el-form-item>
+                                        <el-form-item label="出生日期：" style="width: 90%;" prop="birthday">
+                                            <el-date-picker style="width: 100%;" value-format="yyyy-MM-dd" type="date"
+                                                v-model="userInfo.birthday" placeholder="选择日期">
+                                            </el-date-picker>
+                                        </el-form-item>
+                                        <el-form-item label="职业领域：" style="width: 90%;" prop="career">
+                                            <el-input v-model="userInfo.career" suffix-icon="el-icon-edit"></el-input>
+                                        </el-form-item>
+                                    </el-col>
+
+                                    <!-- 右列 -->
+                                    <el-col :span="12">
+                                        <el-form-item label="电话：" style="width: 90%;" prop="mobile">
+                                            <el-input v-model="userInfo.mobile" suffix-icon="el-icon-edit"></el-input>
+                                        </el-form-item>
+                                        <el-form-item label="邮箱：" style="width: 90%;" prop="email">
+                                            <el-input v-model="userInfo.email" suffix-icon="el-icon-edit"></el-input>
+                                        </el-form-item>
+                                        <el-form-item label="密码：" style="width: 90%;" prop="password">
+                                            <el-input v-model="userInfo.password" suffix-icon="el-icon-edit"
+                                                type="password"></el-input>
+                                        </el-form-item>
+                                        <el-form-item label="地区：" style="width: 90%;" prop="address">
+                                            <el-input v-model="userInfo.address" suffix-icon="el-icon-edit"></el-input>
+                                        </el-form-item>
+                                    </el-col>
+                                </el-row>
+                            </el-form>
+
+                            <span slot="footer" class="dialog-footer">
+                                <el-button type="primary">修改个人信息</el-button>
+                            </span>
                         </div>
+
                     </el-main>
                     <el-footer style="height: 20px;">版权所有：LiChengYang | 2025-2-10</el-footer>
                 </el-container>
