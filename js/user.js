@@ -6,7 +6,7 @@ const app = new Vue({
 
             users: [], // 用户列表
 
-            activeIndex: '6', // 当前激活的菜单项
+            activeIndex: '2', // 当前激活的菜单项
 
             baseURL: "http://127.0.0.1:8000/",
 

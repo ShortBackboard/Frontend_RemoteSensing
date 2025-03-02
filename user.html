@@ -21,6 +21,27 @@
     <!-- 使用CDN直接引入Axios组件库 -->
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
+    <style>
+        .icon {
+            width: 1000px;
+            height: 490px;
+            background-image: url('./image/earth.jpg');
+            background-repeat: no - repeat;
+            background-position: center center;
+            margin-top: 50px;
+            margin-left: 200px;
+        }
+
+        h3 {
+            margin-top: 80px;
+            margin-left: 10px;
+            color: blue;
+            font-size: 25px;
+        }
+
+    </style>
+
+
 
 </head>
 
@@ -67,8 +88,11 @@
                         </div>
 
                         <!-- 卫星数据处理：镶嵌GEE网页  -->
-                        <div v-if="activeIndex === '2'">
-                            <h3>卫星数据处理</h3>
+                        <div v-if="activeIndex === '2'" class="icon">
+                            <a href="https://code.earthengine.google.com/">
+                                <h3>Google Earth Engine</h3>
+                            </a>
+                            
                         </div>
 
                         <!-- 无人机数据处理：简单tif图片处理 -->
@@ -88,13 +112,15 @@
 
                         <!-- 个人信息：个人信息修改，包括密码（模态框，调用update接口）；打开时自动获取个人信息显示-->
                         <div v-if="activeIndex === '6'">
-                            <el-form :model="userInfo" ref="userInfo"  :rules="rules" label-width="120px" label-position="right"
-                                size="mini" style="margin-left: 20px; display: flex; flex-wrap: wrap;">
+                            <el-form :model="userInfo" ref="userInfo" :rules="rules" label-width="120px"
+                                label-position="right" size="mini"
+                                style="margin-left: 20px; display: flex; flex-wrap: wrap;">
                                 <el-row :gutter="20" style="width: 100%;">
                                     <!-- 左列 -->
                                     <el-col :span="12">
                                         <el-form-item label="账号：" style="width: 90%;" prop="no">
-                                            <el-input v-model="userInfo.no" :disabled="true" suffix-icon="el-icon-edit"></el-input>
+                                            <el-input v-model="userInfo.no" :disabled="true"
+                                                suffix-icon="el-icon-edit"></el-input>
                                         </el-form-item>
                                         <el-form-item label="姓名：" style="width: 90%;" prop="name">
                                             <el-input v-model="userInfo.name" suffix-icon="el-icon-edit"></el-input>
