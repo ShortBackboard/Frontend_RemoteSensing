@@ -6,7 +6,7 @@ const app = new Vue({
 
             users: [], // 用户列表
 
-            activeIndex: '2', // 当前激活的菜单项
+            activeIndex: '1', // 当前激活的菜单项
 
             baseURL: "http://127.0.0.1:8000/",
 
@@ -20,6 +20,121 @@ const app = new Vue({
                 password: "",
                 address: "",
                 career: "",
+            },
+
+            chlPreInfo: { // 叶绿素浓度预测数据
+                BARO_Avg: "",  // 气压高度，mbar
+                Temp_Avg: "",  // 摄氏温度，Celsius，℃
+                pH_Avg: "",  // Ph值
+                Cond_Avg: "",  // 电导率，uS/cm
+                TDS_Avg: "",  // 总溶解固体，mg/L
+                DO_Sat_Avg: "",  // 溶解氧饱和度，%
+                Airmar_Pressure: "",  // 空气压力，hPa
+                Airmar_Temperature: "",  // 空气温度，DegC
+                Airmar_Humidity: "",  // 空气湿度，%
+                Airmar_WindSpeed: "",  // 风速，m / s
+            },
+
+            chl:"", //ppb（叶绿素的浓度以十亿分之一的极低浓度单位ppb来表示）
+
+            roles_chl: {
+                BARO_Avg: [
+                    { required: true, message: '气压高度不能为空', trigger: 'blur' },
+                    {
+                        validator: (rule, value, callback) => {
+                          const num = Number(value); 
+                          if (isNaN(num)) {
+                            callback(new Error('请输入有效值'));
+                          } else if (num < 800 || num > 1080) {
+                            callback(new Error('气压高度必须在800到1080之间'));
+                          } else {
+                            callback(); // 验证通过
+                          }
+                        },
+                        trigger: 'blur' // 触发时机（与原有规则保持一致）
+                    }
+                ],
+                Temp_Avg: [
+                    { required: true, message: '摄氏温度不能为空', trigger: 'blur' },
+                ],
+                pH_Avg: [
+                    { required: true, message: 'Ph值不能为空', trigger: 'blur' },
+                ],
+                Cond_Avg: [
+                    { required: true, message: '电导率不能为空', trigger: 'blur' },
+                    {
+                        validator: (rule, value, callback) => {
+                          const num = Number(value); 
+                          if (isNaN(num)) {
+                            callback(new Error('请输入有效值'));
+                          } else if (num < 100 || num > 30000) {
+                            callback(new Error('电导率必须在100到30000之间'));
+                          } else {
+                            callback(); // 验证通过
+                          }
+                        },
+                        trigger: 'blur' // 触发时机（与原有规则保持一致）
+                    }
+                    
+                ],
+                TDS_Avg: [
+                    { required: true, message: '总溶解固体不能为空', trigger: 'blur' },
+                    {
+                        validator: (rule, value, callback) => {
+                          const num = Number(value); 
+                          if (isNaN(num)) {
+                            callback(new Error('请输入有效值'));
+                          } else if (num < 100 || num > 1000) {
+                            callback(new Error('总溶解固体必须在100到1000之间'));
+                          } else {
+                            callback(); // 验证通过
+                          }
+                        },
+                        trigger: 'blur' // 触发时机（与原有规则保持一致）
+                    }
+                ],
+                DO_Sat_Avg: [
+                    { required: true, message: '溶解氧饱和度不能为空', trigger: 'blur' },
+                    {
+                        validator: (rule, value, callback) => {
+                          const num = Number(value); 
+                          if (isNaN(num)) {
+                            callback(new Error('请输入有效值'));
+                          } else if (num < 0 || num > 100) {
+                            callback(new Error('溶解氧饱和度必须在0到100之间'));
+                          } else {
+                            callback(); // 验证通过
+                          }
+                        },
+                        trigger: 'blur' // 触发时机（与原有规则保持一致）
+                    }
+                ],
+                Airmar_Pressure: [
+                    { required: true, message: '空气压力不能为空', trigger: 'blur' },
+                    {
+                        validator: (rule, value, callback) => {
+                          const num = Number(value); 
+                          if (isNaN(num)) {
+                            callback(new Error('请输入有效值'));
+                          } else if (num < 950 || num > 1030) {
+                            callback(new Error('气压高度必须在950到1030之间'));
+                          } else {
+                            callback(); // 验证通过
+                          }
+                        },
+                        trigger: 'blur' // 触发时机（与原有规则保持一致）
+                    }
+                ],
+                Airmar_Temperature: [
+                    { required: true, message: '空气温度不能为空', trigger: 'blur' },
+                ],
+                Airmar_Humidity: [
+                    { required: true, message: '空气湿度不能为空', trigger: 'blur' },
+                ],
+                Airmar_WindSpeed: [
+                    { required: true, message: '风速不能为空', trigger: 'blur' },
+                ],
+
             },
 
             rules: {
@@ -59,6 +174,7 @@ const app = new Vue({
     },
 
     methods: {
+
         handleSelect(index) {
             this.activeIndex = index
         },
@@ -120,13 +236,13 @@ const app = new Vue({
                                 break;
                             }
                         }
-                        
+
                         //提示：
                         that.$message({
                             message: '数据修改成功！',
                             type: 'success'
                         });
-                       
+
                     } else {
                         //失败的提示！
                         that.$message.error(res.data.msg);
@@ -139,7 +255,34 @@ const app = new Vue({
                 })
 
         },
+
+        // 叶绿素浓度预测
+        chlPredict() {
+            //定义that
+            let that = this;
+            //执行Axios请求
+            axios
+                .post(that.baseURL + 'users/chlPre/', that.chlPreInfo)
+                .then(res => {
+                    //执行成功
+                    if (res.data.code === 1) {
+                        that.chl = res.data.data.chl_prediction;
+
+                    } else {
+                        //失败的提示！
+                        that.$message.error(res.data.msg);
+                    }
+                })
+                .catch(err => {
+                    //执行失败
+                    console.log(err);
+                    that.$message.error("后端预测叶绿素浓度结果出现异常！");
+                })
+        }
     },
+
+    
+
 
     mounted() {
         this.userInfo.no = localStorage.getItem('currentUser'); // 从本地存储中获取当前用户编号
