@@ -6,9 +6,20 @@ const app = new Vue({
 
             users: [], // 用户列表
 
-            activeIndex: '1', // 当前激活的菜单项
+            activeIndex: '3', // 当前激活的菜单项
 
             baseURL: "http://127.0.0.1:8000/",
+
+            AsdInfo: { // ASD相关检查信息
+                B2: "", // 蓝色波段，490nm
+                B3: "", // 绿色波段，560nm
+                B4: "", // 红色波段，665nm
+                NIR: "", // 近红外波段，885nm 
+                B4_B3: "", // 叶绿素浓度y=a * (b4/b3) + b
+                NDWI: "", // 归一化水体指数，B3 - NIR / (B3 + NIR)
+            },
+
+            AsdSpectralData: [], // ASD波段数据
 
             userInfo: { // 用户注册信息
                 no: "",
@@ -35,21 +46,21 @@ const app = new Vue({
                 Airmar_WindSpeed: "",  // 风速，m / s
             },
 
-            chl:"", //ppb（叶绿素的浓度以十亿分之一的极低浓度单位ppb来表示）
+            chl: "", //ppb（叶绿素的浓度以十亿分之一的极低浓度单位ppb来表示）
 
             roles_chl: {
                 BARO_Avg: [
                     { required: true, message: '气压高度不能为空', trigger: 'blur' },
                     {
                         validator: (rule, value, callback) => {
-                          const num = Number(value); 
-                          if (isNaN(num)) {
-                            callback(new Error('请输入有效值'));
-                          } else if (num < 800 || num > 1080) {
-                            callback(new Error('气压高度必须在800到1080之间'));
-                          } else {
-                            callback(); // 验证通过
-                          }
+                            const num = Number(value);
+                            if (isNaN(num)) {
+                                callback(new Error('请输入有效值'));
+                            } else if (num < 800 || num > 1080) {
+                                callback(new Error('气压高度必须在800到1080之间'));
+                            } else {
+                                callback(); // 验证通过
+                            }
                         },
                         trigger: 'blur' // 触发时机（与原有规则保持一致）
                     }
@@ -64,31 +75,31 @@ const app = new Vue({
                     { required: true, message: '电导率不能为空', trigger: 'blur' },
                     {
                         validator: (rule, value, callback) => {
-                          const num = Number(value); 
-                          if (isNaN(num)) {
-                            callback(new Error('请输入有效值'));
-                          } else if (num < 100 || num > 30000) {
-                            callback(new Error('电导率必须在100到30000之间'));
-                          } else {
-                            callback(); // 验证通过
-                          }
+                            const num = Number(value);
+                            if (isNaN(num)) {
+                                callback(new Error('请输入有效值'));
+                            } else if (num < 100 || num > 30000) {
+                                callback(new Error('电导率必须在100到30000之间'));
+                            } else {
+                                callback(); // 验证通过
+                            }
                         },
                         trigger: 'blur' // 触发时机（与原有规则保持一致）
                     }
-                    
+
                 ],
                 TDS_Avg: [
                     { required: true, message: '总溶解固体不能为空', trigger: 'blur' },
                     {
                         validator: (rule, value, callback) => {
-                          const num = Number(value); 
-                          if (isNaN(num)) {
-                            callback(new Error('请输入有效值'));
-                          } else if (num < 100 || num > 1000) {
-                            callback(new Error('总溶解固体必须在100到1000之间'));
-                          } else {
-                            callback(); // 验证通过
-                          }
+                            const num = Number(value);
+                            if (isNaN(num)) {
+                                callback(new Error('请输入有效值'));
+                            } else if (num < 100 || num > 1000) {
+                                callback(new Error('总溶解固体必须在100到1000之间'));
+                            } else {
+                                callback(); // 验证通过
+                            }
                         },
                         trigger: 'blur' // 触发时机（与原有规则保持一致）
                     }
@@ -97,14 +108,14 @@ const app = new Vue({
                     { required: true, message: '溶解氧饱和度不能为空', trigger: 'blur' },
                     {
                         validator: (rule, value, callback) => {
-                          const num = Number(value); 
-                          if (isNaN(num)) {
-                            callback(new Error('请输入有效值'));
-                          } else if (num < 0 || num > 100) {
-                            callback(new Error('溶解氧饱和度必须在0到100之间'));
-                          } else {
-                            callback(); // 验证通过
-                          }
+                            const num = Number(value);
+                            if (isNaN(num)) {
+                                callback(new Error('请输入有效值'));
+                            } else if (num < 0 || num > 100) {
+                                callback(new Error('溶解氧饱和度必须在0到100之间'));
+                            } else {
+                                callback(); // 验证通过
+                            }
                         },
                         trigger: 'blur' // 触发时机（与原有规则保持一致）
                     }
@@ -113,14 +124,14 @@ const app = new Vue({
                     { required: true, message: '空气压力不能为空', trigger: 'blur' },
                     {
                         validator: (rule, value, callback) => {
-                          const num = Number(value); 
-                          if (isNaN(num)) {
-                            callback(new Error('请输入有效值'));
-                          } else if (num < 950 || num > 1030) {
-                            callback(new Error('气压高度必须在950到1030之间'));
-                          } else {
-                            callback(); // 验证通过
-                          }
+                            const num = Number(value);
+                            if (isNaN(num)) {
+                                callback(new Error('请输入有效值'));
+                            } else if (num < 950 || num > 1030) {
+                                callback(new Error('气压高度必须在950到1030之间'));
+                            } else {
+                                callback(); // 验证通过
+                            }
                         },
                         trigger: 'blur' // 触发时机（与原有规则保持一致）
                     }
@@ -278,11 +289,50 @@ const app = new Vue({
                     console.log(err);
                     that.$message.error("后端预测叶绿素浓度结果出现异常！");
                 })
-        }
+        },
+
+        handleFileSelectTxt(event) {
+            const file = event.target.files[0];
+            if (file.type === "text/plain") {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const content = e.target.result;
+                    const lines = content.split('\n');
+                    this.AsdSpectralData = lines;
+                    alert("ASD数据文件读取成功！");
+
+                    for (let i = 0; i < this.AsdSpectralData.length; i++) {
+                        const values = this.AsdSpectralData[i].split(' ');
+
+                        if (values[0] === '490') {
+                            this.AsdInfo.B2 = parseFloat(values[1]);
+                        }
+                        if (values[0] === '560') {
+                            this.AsdInfo.B3 = parseFloat(values[1]);
+                        }
+                        if (values[0] === '665') {
+                            this.AsdInfo.B4 = parseFloat(values[1]);
+                        }
+                        if (values[0] === '885') {
+                            this.AsdInfo.NIR = parseFloat(values[1]);
+                        }
+                        if(this.AsdInfo.B3 && this.AsdInfo.B4 && this.AsdInfo.NIR) {
+                            this.AsdInfo.B4_B3 = this.AsdInfo.B4 / this.AsdInfo.B3;
+                            this.AsdInfo.NDWI = ((this.AsdInfo.B3 - this.AsdInfo.NIR) / (this.AsdInfo.B3 + this.AsdInfo.NIR));
+                        }
+
+
+                    }
+                };
+                reader.readAsText(file);
+            } else {
+                alert("请选择一个文本文件");
+            }
+
+        },
+
+
     },
-
-    
-
 
     mounted() {
         this.userInfo.no = localStorage.getItem('currentUser'); // 从本地存储中获取当前用户编号
