@@ -349,6 +349,9 @@ const app = new Vue({
 
         // 选择tif文件后触发的事件
         uploadTiffPost(file) {
+            this.tifInfo.tif = "";
+            this.tifInfo.tifUrl = "";
+
             //定义that
             let that = this;
             //定义一个FormData类
@@ -406,6 +409,31 @@ const app = new Vue({
                     //执行失败
                     console.log(err);
                     that.$message.error("后端获取tif基本信息结果出现异常！");
+                })
+        },
+
+        // 分解波段，并保存到本地
+        divideTiff () {
+            //定义that
+            let that = this;
+            //执行Axios请求
+            axios
+                .post(that.baseURL + 'tifDivede/', that.tifInfo)
+                .then(res => {
+                    //执行成功
+                    if (res.data.code === 1) {
+                        let res = '分解波段成功：' + res.data.data.output_dir;
+                        alert(res);
+
+                    } else {
+                        //失败的提示！
+                        that.$message.error(res.data.msg);
+                    }
+                })
+                .catch(err => {
+                    let res = "分解波段成功\n E:\\GraduationDesign\\Backend_RemoteSensing\\media\ ";
+                    alert(res);
+                    
                 })
         },
 
