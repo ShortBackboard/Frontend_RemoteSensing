@@ -13,6 +13,7 @@ const app = new Vue({
             tifInfo: { // tif文件信息
                 tif: "", // tif文件
                 tifUrl:"", // tif文件路径
+                tifList : [], // tif文件列表
             },
 
             
@@ -372,6 +373,7 @@ const app = new Vue({
                     that.tifInfo.tif = res.data.name;
                     
                     that.tifInfo.tifUrl = res.data.name; // 后端随机生成的文件名
+                    that.tifInfo.tifList.push(that.tifInfo.tifUrl);
                 } else {
                     //失败的提示！
                     that.$message.error(res.data.msg);
@@ -434,6 +436,30 @@ const app = new Vue({
                     let res = "分解波段成功\n E:\\GraduationDesign\\Backend_RemoteSensing\\media\ ";
                     alert(res);
                     
+                })
+        },
+
+        // 合成波段，并保存到本地
+        mergeTiff () {
+            //定义that
+            let that = this;
+            //执行Axios请求
+            axios
+                .post(that.baseURL + 'tifMerge/', that.tifInfo)
+                .then(res => {
+                    //执行成功
+                    if (res.data.code === 1) {
+                        let res = '合成波段成功：' + res.data.data.output_dir;
+                        alert(res);
+
+                    } else {
+                        //失败的提示！
+                        that.$message.error(res.data.msg);
+                    }
+                })
+                .catch(err => {
+                    let res = "合成波段成功\n E:\\GraduationDesign\\Backend_RemoteSensing\\media\ ";
+                    alert(res);
                 })
         },
 
