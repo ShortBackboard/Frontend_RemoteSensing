@@ -38,6 +38,33 @@
             color: blue;
             font-size: 25px;
         }
+
+        .avatar-uploader .el-upload {
+            border: 1px dashed #d9d9d9;
+            border-radius: 6px;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .avatar-uploader .el-upload:hover {
+            border-color: #409EFF;
+        }
+
+        .avatar-uploader-icon {
+            font-size: 28px;
+            color: #8c939d;
+            width: 178px;
+            height: 178px;
+            line-height: 178px;
+            text-align: center;
+        }
+
+        .avatar {
+            width: 178px;
+            height: 178px;
+            display: block;
+        }
     </style>
 
 
@@ -61,7 +88,7 @@
                         </el-menu-item>
                         <el-menu-item index="3" style="display: flex; align-items: center;">
                             <i class="el-icon-document"></i>
-                            <span slot="title">无人机数据处理</span>
+                            <span slot="title">无人机多光谱数据处理</span>
                         </el-menu-item>
                         <el-menu-item index="4" style="display: flex; align-items: center;">
                             <i class="el-icon-ship"></i>
@@ -108,7 +135,7 @@
                                         </el-form-item>
                                     </el-col>
 
-                                    <!-- 右列 -->
+                                    <!-- 右列 --> 
                                     <el-col :span="12">
                                         <el-form-item label="摄氏温度：" style="width: 90%;" prop="Temp_Avg">
                                             <el-input v-model="chlPreInfo.Temp_Avg"
@@ -149,8 +176,23 @@
                         </div>
 
                         <!-- 无人机数据处理：简单tif图片处理 -->
-                        <div v-if="activeIndex === '3'">
-                            <h3>无人机数据处理</h3>
+                        <div v-if="activeIndex === '3'" >
+                            <span style="margin-left: 10px;">上传TIFF影像数据</span>
+                            <el-upload class="avatar-uploader" :show-file-list="false" :http-request="uploadTiffPost"
+                            :before-upload="beforeTiffUpload"
+                                style="margin-left: 10px; ">
+                                <img v-if="tifInfo.tif" :src="tifInfo.tifUrl" class="avatar">
+                                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                            </el-upload>
+
+
+
+                            <div style="margin-top: 20px; ">
+                                <el-button type="primary" @click="getTiffInfo" style="margin-bottom: 10px;">获取TIFF影像基本信息</el-button>
+                                <el-button type="primary" style="margin-bottom: 10px;">拆分多波段TIFF影像</el-button>
+                                <el-button type="primary" style="margin-bottom: 10px;">合成单波段TIFF影像</el-button>
+                            </div>
+
                         </div>
 
                         <!-- ASD地物波谱仪监测：读入txt文件，读取相关波段计算叶绿素浓度 -->
@@ -172,7 +214,7 @@
                                             <el-input v-model="AsdInfo.B4_B3" :disabled="true"></el-input>
                                         </el-form-item>
                                     </el-col>
-                                    
+
                                     <!-- 右列 -->
                                     <el-col :span="12">
                                         <el-form-item label="绿色波段B3：" style="width: 90%;" prop="B3">

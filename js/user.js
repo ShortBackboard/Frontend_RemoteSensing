@@ -10,6 +10,13 @@ const app = new Vue({
 
             baseURL: "http://127.0.0.1:8000/",
 
+            tifInfo: { // tif文件信息
+                tif: "", // tif文件
+                tifUrl:"", // tif文件路径
+            },
+
+            
+
             AsdInfo: { // ASD相关检查信息
                 B2: "", // 蓝色波段，490nm
                 B3: "", // 绿色波段，560nm
@@ -329,6 +336,77 @@ const app = new Vue({
                 alert("请选择一个文本文件");
             }
 
+        },
+
+        beforeTiffUpload(file) {
+            const isTIF = file.type === 'image/tiff';
+    
+            if (!isTIF) {
+              this.$message.error('上传影像只能是 TIFF 格式!');
+            }
+            return isTIF;
+        },
+
+        // 选择tif文件后触发的事件
+        uploadTiffPost(file) {
+            //定义that
+            let that = this;
+            //定义一个FormData类
+            let fileReq = new FormData();
+            //把照片传进去
+            fileReq.append('tif_image', file.file);
+            //使用Axios发起Ajax请求
+            axios(
+                {
+                    method: 'post',
+                    url: that.baseURL + 'upload/',
+                    data: fileReq
+                }
+            ).then(res => {
+                // 根据code判断是否成功
+                if (res.data.code === 1) {
+                    
+                    that.tifInfo.tif = res.data.name;
+                    
+                    that.tifInfo.tifUrl = res.data.name; // 后端随机生成的文件名
+                } else {
+                    //失败的提示！
+                    that.$message.error(res.data.msg);
+                }
+
+            }).catch(err => {
+                console.log(err);
+                that.$message.error("上传TIF出现异常！");
+            })
+
+        },
+
+        // 获取tif文件信息
+        getTiffInfo() {
+            //定义that
+            let that = this;
+            //执行Axios请求
+            axios
+                .post(that.baseURL + 'get_basicTifInfo/', that.tifInfo)
+                .then(res => {
+                    //执行成功
+                    if (res.data.code === 1) {
+  
+                        let resData = ' width:' + res.data.data.width + '\n height: ' + res.data.data.height + 
+                        '\n bands_count: ' + res.data.data.bands_count + '\n crs: ' + res.data.data.crs;
+
+                        alert(resData);
+
+                    } else {
+                        //失败的提示！
+                        that.$message.error(res.data.msg);
+                    }
+                })
+                .catch(err => {
+                    //执行失败
+                    console.log(err);
+                    that.$message.error("后端获取tif基本信息结果出现异常！");
+                })
         },
 
 
